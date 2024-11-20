@@ -14,24 +14,22 @@
     <h1>TODO APP</h1>
     <h2>Tarefas</h2>
     <ul>
-    {{#tasks}}
-        <li style="background-color: {{priorColor}}; margin-bottom: 5px; width: fit-content">{{name}} <a href="/?tid={{id}}">edit</a> <a href="/tarefas/del/{{id}}">done</a></li>
-    {{/tasks}}
+    {{#task}}
+        <li style="background-color: {{priorColor}}; margin-bottom: 5px; width: fit-content">{{task.nome}} </li>
+    {{/task}}
     </ul>
     
     <a href="/tarefas-ordenadas">Ordernar</a>
     <a href="/tarefas/total">Total de tarefas</a>
     
     <form action="/tarefas" method="POST">
-        {{#task.id}}
-        <input type="hidden" name="id" value="{{.}}">
-        {{/task.id}}
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" value="{{task.name}}"/>
+        
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" value="{{task.name}}"/>
         <input type="submit" value="Salvar" class="btn-primary"/>
         <br>
         <label for="cars">Prioridade:</label>
-        <select name="prior" id="prior">
+        <select name="priority" id="priority">
           <option value="alta">Alta</option>
           <option value="media">Média</option>
           <option value="baixa">Baixa</option>

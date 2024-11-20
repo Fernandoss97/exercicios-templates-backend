@@ -1,37 +1,24 @@
 var express = require("express");
 var Task = require("../model/Tasks");
 var TaskSchema = require("../validators/TaskValidator");
+const session = require("express-session");
 const Joi = require("joi");
 var router = express.Router();
+var app = require("../app.js");
 
-/* GET home page. */
 router.get("/", function (req, res, next) {
-  if (Task.list().length == 0) {
-    Task.new("Tarefa 1", "baixa");
-    Task.new("Tarefa 2", "baixa");
-  }
-
-  let obj = Task.getElementById(req.query.tid);
-  res.render("index", { tasks: Task.list(), task: obj });
+  res.render("index", { task: req.session.task });
 });
 
 router.post("/tarefas", function (req, res) {
-  const { error, value } = TaskSchema.validate(req.body);
+  const { name, priority } = req.body;
 
-  // if (error) {
-  //   res.render("index", { tasks: Task.list(), erro: "Dados incompletos" });
-  //   return;
-  // }
+  const task = {
+    nome: name,
+    prioridade: priority,
+  };
 
-  const { id, nome, prior } = value;
-
-  if (id === undefined) {
-    //Inserir
-    Task.new(nome, prior);
-  } else {
-    //Alterar
-    Task.update(id, nome);
-  }
+  req.session.task = task;
 
   res.redirect("/");
 });
